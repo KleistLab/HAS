@@ -1,2 +1,65 @@
-# HAS
-High Acceptance Sampling (for spreading dynamics on adaptive networks)
+# H*igh* A*cceptance* S*ampling* (HAS) for spreading dynamics on adaptive networks
+
+## System requirements 
+
+### Operating System
+
+This workflow was tested on macOS Sonoma Version 14.4.1 and CentOS Linux 7 (Core). 
+
+### Prerequisites
+#### Python
+
+version 3.11.6
+
+Packages:
+
+numpy,
+scipy,
+pandas,
+time,
+sys,
+cython
+
+#### Compile
+
+Before the first execution, the code must be compiled. Navigate to the folder [scripts/HAS_SID](https://github.com/KleistLab/HAS/tree/main/scripts/HAS_SID) or [scripts/HAS_SIDRS](https://github.com/KleistLab/HAS/tree/main/scripts/HAS_SIDRS) and execute the following command
+
+```
+python3 setup.py build_ext --inplace
+```
+
+## Input
+
+The following files must be provided in order for the code to execute. All files contain agent specific parameters in an N-dimensional array:
+- lambda_plus.npy (edge creation parameter $\lambda_i^+$)
+- lambda_minus.npy (edge deletion parameter $\lambda_i^-$)
+- r_diag_vector.npy (diagnosis rate (S $\to$ D) $\lambda_i^{\text{diag}}$)
+- r_inf_vector.npy (infection rate (S+I $\to$ I+I) $\lambda_i^{\text{inf}}$)
+- r_rec_vector.npy (recovery rate (I $\to$ R) $\lambda_i^{\text{rec}}$)
+- r_sus_vector.npy (susceptible rate (R $\to$ S) $\lambda_i^{\text{sus}}$)
+- status_vec.npy (initial status (S,I,D,R) for agent $i$)
+
+These files need to be saved in a folder. The folder name needs to be specified in [`inputs.py`](https://github.com/KleistLab/HAS/blob/main/scripts/HAS_SIDRS/inputs.py). In this file, the following variables need to be defined
+- N: number of agents
+- name: name of the repository to which the results are saved
+- t_max: simulation time
+- sims: number of stochastic repetitons
+- seed: seed of random number generation
+- beta: contact reduction after diagnosis
+- name_param = name of repository that keeps the agent specific parameter files
+
+
+
+## Execution
+
+Navigate to the repository that contains the code [scripts/HAS_SIDRS](https://github.com/KleistLab/HAS/tree/main/scripts/HAS_SIDRS) and execute
+```
+python3 run.py
+```
+
+## Output
+The main pipeline (`config.yaml`) creates a folder *results*, containing all (intermediate) output, with the following structure:
+
+
+
+

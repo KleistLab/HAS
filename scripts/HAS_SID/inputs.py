@@ -5,10 +5,8 @@ import pandas as pd
 # necessary parameters
 N = 10000
 
-name = "final/adaptive/strategy/bottom_only"
-#infected_0 = 10
-#path_to_results = "/Users/nilsgubela/Desktop/Projects/Ideas/Simulation speed up/FastStochasticSampling/results/scenarios_final/network/"+name
-path_to_results = "/Users/nilsgubela/Desktop/Projects/Ideas/Simulation speed up/FastStochasticSampling/results/"+name
+name = "demo"
+path_to_results = "/demo/results"
 t_max = 80
 sims = 10
 seed = 11
@@ -18,8 +16,7 @@ warm_up = 0 # can be set to negative value in order to "evolve" network before p
 beta = 0.01
 
 # load parameters from files
-name_param = name
-path_to_parameters = "/Users/nilsgubela/Desktop/Projects/Ideas/Simulation speed up/FastStochasticSampling/parameters/"+name_param
+path_to_parameters = "/demo/parameters"
 
 # fast simulation or extensive simulation
 fast = False

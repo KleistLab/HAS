@@ -39,6 +39,8 @@ ax.plot(t,mean_vec1[:,2], color = "forestgreen",label = "R" )
 handles, labels = ax.get_legend_handles_labels()
 ax.legend(handles=handles, ncol = 1,frameon=False)
 ax.set_xlim(0,100)
+ax.set_xlabel("Time")
+ax.set_ylabel("Number of agents")
 
 fig.savefig("results/plot.svg")
 

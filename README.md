@@ -41,12 +41,13 @@ The following files must be provided in order for the code to execute. All files
 
 These files need to be saved in a folder. The folder name needs to be specified in [`inputs.py`](https://github.com/KleistLab/HAS/blob/main/scripts/HAS_SIDRS/inputs.py). In this file, the following variables need to be defined
 - N: number of agents
-- name: name of the repository to which the results are saved
+- name: name of the calculation
+- path_to_results: file path where the outputs should be stored
 - t_max: simulation time
 - sims: number of stochastic repetitons
 - seed: seed of random number generation
 - beta: contact reduction after diagnosis
-- name_param = name of repository that keeps the agent specific parameter files
+- path_to_parameters = file path to repository that keeps the agent specific parameter files
 
 
 
@@ -58,8 +59,18 @@ python3 run.py
 ```
 
 ## Output
-The main pipeline (`config.yaml`) creates a folder *results*, containing all (intermediate) output, with the following structure:
+The following files are created in the folder *results*, with the following structure:
+```
+|-- results
+ 	|-- has_feat_result_extended_*N*_*sims*_*t_max*.csv  # Number of agents per compartment at each (integer) time step, each row is one simulation
+	|-- has_feat_network_result_*N*_*sims*_*t_max*.csv  # Average $\lambda_i^+$ at each (integer) time step, each row is one agent
+	|-- has_feat_inf_result_*N*_*sims*_*t_max*.csv  # Probability for each agent to be infected at each (integer) time step, each row is one agent
+```
 
+## Demo
+Demo datasets are provided in the repository folder [`demo`](https://github.com/KleistLab/VASIL/tree/main/demo)
+
+If your environment is not yet activated, type
 
 
 

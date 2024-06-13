@@ -5,120 +5,32 @@ import pandas as pd
 # necessary parameters
 N = 10000
 
-name = "final/adaptive/testing_regime/correlation"
-#infected_0 = 10
-#path_to_results = "/Users/nilsgubela/Desktop/Projects/Ideas/Simulation speed up/FastStochasticSampling/results/scenarios_final/network/"+name
-path_to_results = "/Users/nilsgubela/Desktop/Projects/Ideas/Simulation speed up/FastStochasticSampling/results/"+name
+name = "demo"
+path_to_results = "demo/results"
 t_max = 100
-sims = 1
+sims = 10
 seed = 11
 warm_up = 0 # can be set to negative value in order to "evolve" network before pandemic hits 
 
 beta = 0.01
 
-
-# load parameters from files?
-load_params = True
-name_param = name
-path_to_parameters = "/Users/nilsgubela/Desktop/Projects/Ideas/Simulation speed up/FastStochasticSampling/parameters/"+name_param
+# load parameters from files
+path_to_parameters = "demo/parameters"
 
 
 np.random.seed(seed)
 
-if load_params:
-	#mu = np.load(path_to_parameters+"/mu"+str(N)+".npy")
-	infection_risk_vec = np.load(path_to_parameters+"/r_inf_vector"+str(N)+".npy")
-	diagnosis_risk_vec = np.load(path_to_parameters+"/r_diag_vector"+str(N)+".npy")
-	recovery_risk_vec = np.load(path_to_parameters+"/r_rec_vector"+str(N)+".npy")
-	sus_risk_vec = np.load(path_to_parameters+"/r_sus_vector"+str(N)+".npy")
-	#partnerships = np.load(path_to_parameters+"/partnerships"+str(N)+".npy").tolist()
-	lambda_minus_vec = np.load(path_to_parameters+"/lambda_minus_vec"+str(N)+".npy")
-	lambda_plus_vec = np.load(path_to_parameters+"/lambda_plus_vec"+str(N)+".npy")
-	status_vec = np.load(path_to_parameters+"/status_vec"+str(N)+".npy").tolist()
-	#diag_strategy = np.load(path_to_parameters+"diag_strategy.npy")
 
-	#cm = diag_strategy[0]
-	#beta = diag_strategy[1]
-	#t_offset = diag_strategy[2]
-	cm = N
-	cm_off = N
+infection_risk_vec = np.load(path_to_parameters+"/r_inf_vector.npy")
+diagnosis_risk_vec = np.load(path_to_parameters+"/r_diag_vector.npy")
+recovery_risk_vec = np.load(path_to_parameters+"/r_rec_vector.npy")
+sus_risk_vec = np.load(path_to_parameters+"/r_sus_vector.npy")
+lambda_minus_vec = np.load(path_to_parameters+"/lambda_minus_vec.npy")
+lambda_plus_vec = np.load(path_to_parameters+"/lambda_plus_vec.npy")
+status_vec = np.load(path_to_parameters+"/status_vec.npy").tolist()
 
-
-else:
-	
-	lambda_minus = 1
-	infection_prop = 0.1/(1-0.1)
-	diagnosis_prop = 1/20
-	diagnosed_0 = 0
-	infected_0 = 10
-	recovery = 1/10
-	sus = 1/(7*4*3)
-
-	# adaptive parameters
-	cm = N
-	#t_offset = 14
-	cm_off = N
-
-	#infection_prop_min = 0.01
-	#diag_min = 0.1
-
-	# exp+1 distribution
-	mu_parameter = 4
-	#mu = np.around(1/(1/mu_parameter) * np.log(1/np.random.rand(N))) + 1 # shifted by 1, s.t. mu_i > 0
-	#mu = np.round(np.random.exponential(mu_parameter, N), 1)
-	# ones
-	mu_mean = mu_parameter + 1
-	mu = np.ones(N) * mu_mean
-	# uniform distribution
-	#mu_mean = mu_parameter + 1
-	#mu = np.random.randint(1,2*mu_mean, N)
-	#while abs(np.mean(mu) - mu_mean) > 0.01:
-	#	mu = np.random.randint(1,2*mu_mean, N)
-	#print(np.mean(mu))
-	# scale free
-	#mu = np.round(np.random.rand(N)**(-2/5),1)
-
-	#infection_risk_vec = np.round(np.random.rand(N), 5) * infection_prop
-	infection_risk_vec = np.ones(N) * infection_prop
-	#r_i_vec = np.round(np.random.rand(N), 5)/(infection_prop - infection_prop_min) + infection_prop_min
-	#diagnosis_risk_vec = np.round(np.random.rand(N), 5) * diagnosis_prop
-	diagnosis_risk_vec = np.ones(N) * diagnosis_prop
-	#diag_vec = np.round(np.random.rand(N), 5)/(diagnosis_prop - diag_min) + diag + diag_min
-
-	print("Infection rates initialized.")
-
-
-	# contact rates
-	lambda_plus_vec = get_rates(mu)
-	lambda_minus_vec = np.ones(N) * lambda_minus # for now: all relationships hold for one month
-
-	#lambda_plus_vec *= 1/10
-
-	print("Network rates initialized.")
-
-	# initial status 
-	status_vec = ["S"] * N
-	status_vec[:infected_0] = ["I"] * infected_0
-
-
-	recovery_risk_vec = np.ones(N) * recovery
-
-	sus_risk_vec = np.ones(N) * sus
-
-
-
-	# save parameters
-	#np.save(path_to_parameters+"/mu"+str(N)+".npy", mu)
-	np.save(path_to_parameters+"/r_inf_vector"+str(N)+".npy", infection_risk_vec)
-	np.save(path_to_parameters+"/r_diag_vector"+str(N)+".npy", diagnosis_risk_vec)
-	np.save(path_to_parameters+"/partnerships"+str(N)+".npy", list())
-	np.save(path_to_parameters+"/lambda_minus_vec"+str(N)+".npy", lambda_minus_vec)
-	np.save(path_to_parameters+"/lambda_plus_vec"+str(N)+".npy", lambda_plus_vec)
-	np.save(path_to_parameters+"/status_vec"+str(N)+".npy", status_vec)
-	np.save(path_to_parameters+"/r_rec_vector"+str(N)+".npy", recovery_risk_vec)
-	np.save(path_to_parameters+"/r_sus_vector"+str(N)+".npy", sus_risk_vec)
-	#np.save(path_to_parameters+"/diag_strategy.npy", np.array([cm, beta, t_offset]))
-
+cm = N
+cm_off = N
 
 
 init_S = []

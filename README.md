@@ -25,7 +25,7 @@ cython
 Before the first execution, the code must be compiled. Navigate to the folder [scripts/HAS_SID](https://github.com/KleistLab/HAS/tree/main/scripts/HAS_SID) or [scripts/HAS_SIDRS](https://github.com/KleistLab/HAS/tree/main/scripts/HAS_SIDRS) and execute the following command
 
 ```
-python3 setup.py build_ext --inplace
+python setup.py build_ext --inplace
 ```
 
 ## Input
